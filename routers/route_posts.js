@@ -10,7 +10,7 @@ router.get('/feed' , async (req , res , next)=>{
     return res.status(200).json({data:data.rows})
 })
 
-
+// n
 router.post('/insert' , async (req , res , next)=>{
     const {content} = req.body;
     const Playload = payload(req)
