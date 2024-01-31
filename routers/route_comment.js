@@ -4,6 +4,14 @@ const con = require('../db/connect.js');
 const payload = require('../midleware/payload.js');
 
 
+router.get("/getcomment/:id" , async (req , res , next)=>{
+    const id = req.params.id;
+    const resault = await con.query("select * from comment where  posts_id  = $1  order by created_at desc ",[id])
+    if (resault) {
+        return res.status(200).json({data:resault.rows})
+    }
+})
+
 
 router.post('/create/:id' , async (req , res , next)=>{
     
