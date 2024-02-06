@@ -9,7 +9,7 @@ router.get("/getcomment" , async (req , res , next)=>{
     const {id , page } = req.query;
     const limit = 5;
     const offset = page * 5;
-    const resault = await con.query("select * from comment where  posts_id  = $1 order by created_at desc limit $2 offset $3  ",[id , limit , offset])
+    const resault = await con.query("select c.* , u.username  from comment c inner join users u on u.id = c.user_id where  c.posts_id  = $1 order by created_at desc limit $2 offset $3  ",[id , limit , offset])
     if (resault) {
         return res.status(200).json({data:resault.rows})
     }
