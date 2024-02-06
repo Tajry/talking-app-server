@@ -15,6 +15,16 @@ router.get('/feed' , async (req , res , next)=>{
     return res.status(200).json({data:data.rows})
 })
 
+router.get('/items/:id' , async (req , res , next)=>{
+    const id  = req.params.id
+    const data = await con.query(
+        `select p.id , p.content , p.created_at , p.updated_at  , u.username from posts p
+        inner join users u on p.user_id = u.id  where p.id = $1` ,[id]
+        )
+    return res.status(200).json({data:data.rows})
+})
+
+
 
 router.get('/postsuser' , async (req , res , next)=>{
     const Payload = payload(req);

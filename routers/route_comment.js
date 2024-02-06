@@ -4,9 +4,12 @@ const con = require('../db/connect.js');
 const payload = require('../midleware/payload.js');
 
 
-router.get("/getcomment/:id" , async (req , res , next)=>{
-    const id = req.params.id;
-    const resault = await con.query("select * from comment where  posts_id  = $1  order by created_at desc ",[id])
+router.get("/getcomment" , async (req , res , next)=>{
+    
+    const {id , page } = req.query;
+    const limit = 5;
+    const offset = page * 5;
+    const resault = await con.query("select * from comment where  posts_id  = $1 order by created_at desc limit $2 offset $3  ",[id , limit , offset])
     if (resault) {
         return res.status(200).json({data:resault.rows})
     }
@@ -17,6 +20,7 @@ router.post('/create/:id' , async (req , res , next)=>{
     
     const id = req.params.id;
     const {content} = req.body;
+    // console.log(content)
     const Payload  = await payload(req);
     const resault = await con.query("insert into comment (user_id , posts_id , content) values($1 , $2 ,$3 )" , [Payload.id , id , content])
     if (resault) {
